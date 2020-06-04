@@ -4,6 +4,8 @@ import logging
 import subprocess
 
 from .api import set_up_api
+
+
 log = logging.getLogger(__name__)
 ROOT_FOLDER = os.path.dirname(os.path.dirname(__file__))
 STATIC_FOLDER = os.path.join(ROOT_FOLDER, 'static')
@@ -20,7 +22,6 @@ class RadioApp(Flask):
         self.version = os.getenv('VERSION')
 
     def logger(self):
-        log.info("asd")
         return logging.getLogger(self.logger_name)
 
 
