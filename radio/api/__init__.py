@@ -4,6 +4,7 @@ def set_up_api(app: Flask):
 
     from .ping import VersionView
     from .music import TrackView, MusicListView
+    from .login import LoginView
 
     mod = Blueprint('api', __name__)
 
@@ -21,6 +22,11 @@ def set_up_api(app: Flask):
     mod.add_url_rule(
         '/music/<int:track_id>',
         view_func=TrackView.as_view('ApiTrack'),
+    )
+
+    mod.add_url_rule(
+        '/login',
+        view_func=LoginView.as_view('ApiLogin'),
     )
 
     # Реєстрація блюпрінта
