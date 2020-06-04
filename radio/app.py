@@ -1,11 +1,16 @@
 import os
 from flask import Flask
 import logging
+import subprocess
 
+from .api import set_up_api
 log = logging.getLogger(__name__)
 ROOT_FOLDER = os.path.dirname(os.path.dirname(__file__))
 STATIC_FOLDER = os.path.join(ROOT_FOLDER, 'static')
 
+
+def configure_blueprints(app):
+    set_up_api(app)
 
 class RadioApp(Flask):
 
@@ -15,12 +20,15 @@ class RadioApp(Flask):
         self.version = os.getenv('VERSION')
 
     def logger(self):
-        print("a")
         log.info("asd")
-        print(self.logger_name)
         return logging.getLogger(self.logger_name)
 
 
 def create_app():
     app = RadioApp(__name__)
+    version = subprocess.check_output(["git", "describe", "--always", "--dirty", "--tags"]).strip()
+    version = version.decode()
+    app.config['VERSION'] = app.config.get('VERSION', version)
+
+    configure_blueprints(app)
     return app
