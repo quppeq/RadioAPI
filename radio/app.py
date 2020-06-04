@@ -36,7 +36,9 @@ class RadioApp(Flask):
         static_folder = None if os.getenv('STATIC_URL') else STATIC_FOLDER
         super().__init__(*args, static_folder=static_folder, **kw)
         self.version = os.getenv('VERSION')
+        self.logger_name = 'RadioApp'
 
+    @property
     def logger(self):
         return logging.getLogger(self.logger_name)
 
@@ -46,7 +48,7 @@ def create_app():
     version = subprocess.check_output(["git", "describe", "--always", "--dirty", "--tags"]).strip()
     version = version.decode()
     app.config['VERSION'] = app.config.get('VERSION', version)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite://{ROOT_FOLDER}/db/app.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{ROOT_FOLDER}/db/app.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     configure_db(app)
