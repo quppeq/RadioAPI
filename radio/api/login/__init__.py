@@ -3,33 +3,41 @@ from flask.views import MethodView
 from db import db
 from radio.models.user import User
 import logging
+from .helpers import generator_token
 log = logging.getLogger(__name__)
 
 
 class LoginView(MethodView):
 
     def post(self):
+        SECRET_KEY = current_app.config.get("TELEGRAM_KEY")
+
         data = request.json
         if not isinstance(data, dict):
             abort(400)
         tg_id = data.get('telegram_id')
         name = data.get('name')
+        if not (tg_id and name):
+            abort(400)
 
-        # TODO: Зробити нормальну валідацію що логін йде з кормального місця
+        # TODO: Зробити нормальну валідацію що логін йде з нормального місця
         secret = data.get('secret_key')
-        if secret != 'telegram_bot':
+        if secret != SECRET_KEY:
             log.warning(f'bad login for id: {tg_id}')
             abort(403)
 
-
         user = db.session.query(User).filter(
             User.telegram_id == tg_id
-        ).first
+        ).first()
         if not user:
             user = User(telegram_id=tg_id, name=name)
+
+            # TODO: Змінити це. Зроблено тому що інкремент в sqlite дивний
+            user.id = tg_id
+
             db.session.add(user)
 
-        session_token = "random_token"
+        session_token = generator_token(5)
         user.session_token = session_token
 
         db.session.commit()

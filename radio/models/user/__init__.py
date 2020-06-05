@@ -1,5 +1,5 @@
 from db import db
-
+import datetime
 
 class User(db.Model):
 
@@ -16,3 +16,5 @@ class User(db.Model):
         nullable=False,
         unique=True,
     )
+
+    last_auth = db.Column(db.DateTime, default=datetime.datetime.utcnow())
