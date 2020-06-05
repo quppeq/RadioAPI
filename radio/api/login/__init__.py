@@ -1,4 +1,4 @@
-from flask import current_app, jsonify, request, abort
+from flask import current_app, jsonify, request, abort, g
 from flask.views import MethodView
 from db import db
 from radio.models.user import User
