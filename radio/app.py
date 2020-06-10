@@ -17,8 +17,10 @@ STATIC_FOLDER = os.path.join(ROOT_FOLDER, 'static')
 def configure_db(app):
     db.init_app(app)
 
+
 def configure_migration(app, db):
     return Migrate(app, db)
+
 
 def configure_manager(app):
     manager = Manager(app)
@@ -29,6 +31,7 @@ def configure_manager(app):
 
 def configure_blueprints(app):
     set_up_api(app)
+
 
 class RadioApp(Flask):
 
