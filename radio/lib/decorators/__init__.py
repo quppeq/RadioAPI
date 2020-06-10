@@ -12,7 +12,9 @@ def authorize(f):
             abort(401)
 
         token = str(request.json['Authorization'])
-        user = db.session.query(User, User.session_token == token).first()
+        user = db.session.query(User).filter(
+            User.session_token == token
+        ).first()
         if not user:
             abort(401)
         g.user = user

@@ -3,7 +3,7 @@ from flask import Blueprint, Flask
 def set_up_api(app: Flask):
 
     from .ping import VersionView
-    from .music import TrackView, MusicListView
+    from .music import TrackView, MusicView, QueueView
     from .login import LoginView
 
     mod = Blueprint('api', __name__)
@@ -15,8 +15,13 @@ def set_up_api(app: Flask):
     )
 
     mod.add_url_rule(
-        '/music/list',
-        view_func=MusicListView.as_view('ApiMusicList'),
+        '/music/',
+        view_func=MusicView.as_view('ApiMusicList'),
+    )
+
+    mod.add_url_rule(
+        '/queue/',
+        view_func=QueueView.as_view('ApiQueueList'),
     )
 
     mod.add_url_rule(
