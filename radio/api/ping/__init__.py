@@ -15,5 +15,4 @@ class VersionView(MethodView):
     def post(self):
         version = (current_app.config["VERSION"])
         response = {'version': version}
-        print(g.user)
         return jsonify(response)

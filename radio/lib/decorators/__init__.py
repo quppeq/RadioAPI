@@ -9,7 +9,7 @@ def authorize(f):
     def decorated_function(*args, **kws):
 
         if not request.json or 'Authorization' not in request.json:
-           abort(401)
+            abort(401)
 
         token = str(request.json['Authorization'])
         user = db.session.query(User, User.session_token == token).first()
