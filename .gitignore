@@ -6,4 +6,5 @@ logs/
 log/
 .coverage
 .cache
-*.dbPipfile.lock
+*.db
+Pipfile.lock
