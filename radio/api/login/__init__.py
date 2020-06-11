@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 class LoginView(MethodView):
 
     def post(self):
-        SECRET_KEY = current_app.config.get("TELEGRAM_KEY")
+        SECRET_KEY = current_app.config["BOT_SHARED_SECRET"]
 
         data = request.json
         if not isinstance(data, dict):
