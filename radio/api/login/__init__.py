@@ -32,9 +32,6 @@ class LoginView(MethodView):
         if not user:
             user = User(telegram_id=tg_id, name=name)
 
-            # TODO: Змінити це. Зроблено тому що інкремент в sqlite дивний
-            user.id = tg_id
-
             db.session.add(user)
 
         session_token = generator_token()
