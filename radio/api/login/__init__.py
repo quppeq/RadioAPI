@@ -37,7 +37,7 @@ class LoginView(MethodView):
 
             db.session.add(user)
 
-        session_token = generator_token(5)
+        session_token = generator_token()
         user.session_token = session_token
 
         db.session.commit()
