@@ -6,7 +6,7 @@ def set_up_admin(app: Flask):
     mod = Blueprint('admin', __name__)
 
     # Дивимось на ролі
-    app.before_request(is_admin_view)
+    mod.before_request(is_admin_view)
 
     # Реєстрація блюпрінта
     app.register_blueprint(mod, url_prefix='/admin')
