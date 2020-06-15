@@ -1,7 +1,7 @@
-import string
-import random
+from os import urandom
+from base64 import b64encode
 
 
-def generator_token(length=8):
-    letters = string.ascii_letters + string.digits
-    return ''.join(random.choice(letters) for _ in range(length))
+def generator_token(length=18):
+    res = urandom(length)
+    return b64encode(res).decode()

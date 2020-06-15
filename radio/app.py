@@ -7,6 +7,7 @@ import subprocess
 
 from db import db
 from .api import set_up_api
+from .config import Config
 
 
 log = logging.getLogger(__name__)
@@ -50,9 +51,8 @@ def create_app():
     app = RadioApp(__name__)
     version = subprocess.check_output(["git", "describe", "--always", "--dirty", "--tags"]).strip()
     version = version.decode()
-    app.config['VERSION'] = app.config.get('VERSION', version)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{ROOT_FOLDER}/db/app.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(Config)
+    app.config["VERSION"] = version
 
     configure_db(app)
     configure_migration(app, db)

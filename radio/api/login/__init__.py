@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 class LoginView(MethodView):
 
     def post(self):
-        SECRET_KEY = current_app.config.get("TELEGRAM_KEY")
+        SECRET_KEY = current_app.config["BOT_SHARED_SECRET"]
 
         data = request.json
         if not isinstance(data, dict):
@@ -32,12 +32,9 @@ class LoginView(MethodView):
         if not user:
             user = User(telegram_id=tg_id, name=name)
 
-            # TODO: Змінити це. Зроблено тому що інкремент в sqlite дивний
-            user.id = tg_id
-
             db.session.add(user)
 
-        session_token = generator_token(5)
+        session_token = generator_token()
         user.session_token = session_token
 
         db.session.commit()

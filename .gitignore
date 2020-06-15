@@ -7,3 +7,6 @@ log/
 .coverage
 .cache
 *.db
+Pipfile.lock
+.env
+migrations
