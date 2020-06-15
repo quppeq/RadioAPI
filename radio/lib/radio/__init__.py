@@ -5,11 +5,12 @@ from .models import Track
 
 
 ON_AIR = b"json.on_air"
+PUSH_TRACK = b"file://%s"
+
 EOF = b"END"
 END = b"\nexit\n"
 
 
-# TODO: Реалізувати функціонал
 def get_now() -> Track:
     host = current_app.config.get("RADIO_URL", "127.0.0.1")
     port = current_app.config.get("RADIO_PORT", "1234")
@@ -21,6 +22,11 @@ def get_now() -> Track:
         t.write(END)
     return Track.from_dict(mess)
 
-def put_in_queue(track_path: str):
 
-    raise NotImplementedError
+def put_in_queue(track_path: str):
+    host = current_app.config.get("RADIO_URL", "127.0.0.1")
+    port = current_app.config.get("RADIO_PORT", "1234")
+    with telnetlib.Telnet(host, port) as t:
+        t.write(PUSH_TRACK % track_path.encode())
+        t.write(END)
+    return {}
