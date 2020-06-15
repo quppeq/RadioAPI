@@ -7,6 +7,7 @@ import subprocess
 
 from db import db
 from .api import set_up_api
+from .admin import set_up_admin
 from .config import Config
 
 
@@ -32,6 +33,7 @@ def configure_manager(app):
 
 def configure_blueprints(app):
     set_up_api(app)
+    set_up_admin(app)
 
 
 class RadioApp(Flask):

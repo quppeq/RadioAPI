@@ -5,6 +5,7 @@ from radio.models.radio import Track, Queue, PartOfDayEnum
 from radio.lib.decorators import authorize
 
 from datetime import datetime
+ERROR_TRACK_NAME = "Трек з такою назвою вже є в базі"
 
 
 class TrackView(MethodView):
@@ -39,6 +40,15 @@ class MusicView(MethodView):
         name = data["name"]
         filepath = data["filepath"]
         duration = data["duration"]
+
+        track = db.session.query(
+            Track
+        ).filter(
+            name=name
+        ).first()
+        if track:
+            return jsonify({"error": ERROR_TRACK_NAME}), 200
+
         track = Track(
             name=name,
             filepath=filepath,

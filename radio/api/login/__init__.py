@@ -11,6 +11,7 @@ class LoginView(MethodView):
 
     def post(self):
         SECRET_KEY = current_app.config["BOT_SHARED_SECRET"]
+        print(SECRET_KEY)
 
         data = request.json
         if not isinstance(data, dict):
