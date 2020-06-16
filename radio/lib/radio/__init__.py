@@ -5,7 +5,7 @@ from .models import Track
 
 
 ON_AIR = b"json.on_air"
-PUSH_TRACK = b"file://%s"
+PUSH_TRACK = b"request.push file://%s"
 
 EOF = b"END"
 END = b"\nexit\n"
