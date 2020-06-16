@@ -110,6 +110,8 @@ class QueueView(MethodView):
         db.session.flush()
 
         part_of_day = data["part_of_day"]
+        part_of_day = PartOfDayEnum[part_of_day].value
+
         queue = Queue(
             track_id=track.id,
             part=part_of_day,
