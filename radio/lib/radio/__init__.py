@@ -30,3 +30,7 @@ def put_in_queue(track_path: str):
         t.write(PUSH_TRACK % track_path.encode())
         t.write(END)
     return {}
+
+
+def clear_rotation():
+    raise NotImplementedError
