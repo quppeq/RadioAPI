@@ -1,0 +1,37 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <table border="2" class="table table-dark">
+    <tr>
+        <th>Пісня</th>
+        <th>Тривалість</th>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">Ранковий блок</td>
+    </tr>
+    {% for track in morning %}
+        <tr>
+            <td>{{ track.track.name }}</td>
+            <td>{{ track.track.duration }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="2" align="center">Денний блок</td>
+    </tr>
+    {% for track in afternoon %}
+        <tr>
+            <td>{{ track.track.name }}</td>
+            <td>{{ track.track.duration }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="2" align="center">Вечірній блок</td>
+    </tr>
+    {% for track in evening %}
+        <tr>
+            <td>{{ track.track.name }}</td>
+            <td>{{ track.track.duration }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
