@@ -1,5 +1,6 @@
 from flask import Blueprint, Flask
 
+
 def set_up_api(app: Flask):
 
     from .ping import VersionView
