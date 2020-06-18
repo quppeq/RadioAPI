@@ -3,8 +3,17 @@ from flask.views import MethodView
 from db import db
 from radio.models.radio import Track, Queue, PartOfDayEnum
 from radio.lib.decorators import authorize
+from radio.lib.radio import get_now, put_in_queue, clear_rotation
 
 from datetime import datetime
+ERROR_TRACK_NAME = "Трек з такою назвою вже є в базі"
+
+
+class OnAir(MethodView):
+
+    def get(self):
+        track = get_now()
+        return track.to_dict()
 
 
 class TrackView(MethodView):
@@ -39,6 +48,15 @@ class MusicView(MethodView):
         name = data["name"]
         filepath = data["filepath"]
         duration = data["duration"]
+
+        track = db.session.query(
+            Track
+        ).filter(
+            name=name
+        ).first()
+        if track:
+            return jsonify({"error": ERROR_TRACK_NAME}), 200
+
         track = Track(
             name=name,
             filepath=filepath,
@@ -91,6 +109,8 @@ class QueueView(MethodView):
         db.session.flush()
 
         part_of_day = data["part_of_day"]
+        part_of_day = PartOfDayEnum[part_of_day].value
+
         queue = Queue(
             track_id=track.id,
             part=part_of_day,
@@ -107,3 +127,27 @@ class QueueView(MethodView):
         )
 
         return jsonify(response), 200
+
+
+class RotationView(MethodView):
+
+    def get(self):
+        data = request.args
+        part_of_day = data["part_of_day"]
+        day = data["day"]
+
+        part_of_day = PartOfDayEnum[part_of_day].value
+        day = datetime.strptime(day, '%Y-%m-%d')
+
+        tracks = db.session.query(
+            Queue,
+        ).filter(
+            Queue.part == part_of_day,
+            Queue.day == day
+        ).all()
+
+        clear_rotation()
+        for track in tracks:
+            put_in_queue(track.track.filepath)
+
+        return jsonify({})

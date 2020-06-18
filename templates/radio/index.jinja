@@ -1,0 +1,15 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <audio
+        controls
+        preload="none"
+        src={{ radio_src }}></audio>
+    <br>
+    <div>
+    <h1>{{ now.title }}</h1>
+    <h1>{{ now.album }}</h1>
+    <h1>{{ now.artist }}</h1>
+    <h1>{{ now.year }}</h1>
+    </div>
+{% endblock %}

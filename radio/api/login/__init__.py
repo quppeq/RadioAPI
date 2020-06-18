@@ -3,6 +3,9 @@ from flask.views import MethodView
 from db import db
 from radio.models.user import User
 import logging
+from datetime import datetime
+from dateutil import relativedelta
+
 from .helpers import generator_token
 log = logging.getLogger(__name__)
 
@@ -35,7 +38,15 @@ class LoginView(MethodView):
             db.session.add(user)
 
         session_token = generator_token()
+
         user.session_token = session_token
+
+        auth_time = datetime.now()
+
+        #   Перевіряємо аби часто не логінились
+        if user.last_auth and user.last_auth + relativedelta.relativedelta(minutes=30) > auth_time:
+            abort(429)
+        user.last_auth = auth_time
 
         db.session.commit()
 
