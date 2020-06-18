@@ -13,4 +13,4 @@ class RadioView(MethodView):
 
     def get(self):
 
-        return render_template('radio/index.jinja')
+        return render_template('radio/index.jinja', radio_src="http://127.0.0.1:8000/radio.ogg")
