@@ -9,4 +9,3 @@ log/
 *.db
 Pipfile.lock
 .env
-migrations
